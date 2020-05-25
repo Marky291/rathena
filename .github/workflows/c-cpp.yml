@@ -23,6 +23,9 @@ jobs:
         mysql password: ragnarok
     - name: Create Database
       run: |
+        apt-get install -y mysql-client
+        mysql -uroot -ppassword -e "SHOW DATABASES"
+        
         sudo systemctl start mysql
         mysql -u root -e "CREATE DATABASE ragnarok;" || aborterror "Unable to create database."
         mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
