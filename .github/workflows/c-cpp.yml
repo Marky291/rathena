@@ -15,7 +15,7 @@ jobs:
       run: |
         sudo systemctl enable mysql.service
         sudo systemctl start mysql.service
-        mysql -u root -proot -e "CREATE DATABASE $DB_NAME;"
+        mysql -u root -proot -e "CREATE DATABASE ragnarok;"
         mysql -u root -proot ragnarok < sql-files/main.sql
     - name: Configure Files
       run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
