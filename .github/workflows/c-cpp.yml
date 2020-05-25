@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Create Database
       run: |
-        mysql -uroot -e "SHOW DATABASES"
+        sudo /etc/init.d/mysql start
         mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
         mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
         mysql -u root ragnarok < sql-files/custom.sql || aborterror "Unable to import logs database."
