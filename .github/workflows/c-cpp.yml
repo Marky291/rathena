@@ -17,9 +17,14 @@ jobs:
         sudo systemctl start mysql.service
         mysql -u root -proot -e "CREATE DATABASE ragnarok;"
         mysql -u root -proot ragnarok < sql-files/main.sql
+        mysql -u root -proot ragnarok < sql-files/logs.sql
+        mysql -u root -proot ragnarok < sql-files/custom.sql
     - name: Configure Files
       run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
     - name: Compile Server
       run: make server
-    - name: Run Login
-      run: ./login-server --run-once
+    - name: Run Server
+      run: |
+        ./login-server --run-once
+        ./char-server --run-once
+        ./map-server --run-once
