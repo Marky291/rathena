@@ -23,7 +23,6 @@ jobs:
         mysql password: ragnarok
     - name: Create Database
       run: |
-        apt-get install -y mysql-client
         mysql -uroot -ppassword -e "SHOW DATABASES"
         
         sudo systemctl start mysql
