@@ -1,0 +1,26 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        # MYSQL_DATABASE - name for the default database that is created
+        mysql database: ragnarok
+        # MYSQL_USER - create the specified user with superuser power for created database
+        mysql user: ragnarok
+        # MYSQL_PASSWORD - specified superuser password which user is power for created database
+        mysql password: ragnarok
