@@ -21,16 +21,17 @@ jobs:
         mysql user: ragnarok
         # MYSQL_PASSWORD - specified superuser password which user is power for created database
         mysql password: ragnarok
-    - uses: actions/checkout@v2
-    - name: Configure Server
-      run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
-    - name: Compile Server
-      run: make server
-    - name: Database Creation
+    - name: Create Database
       run: |
+        sudo systemctl start mysql
         mysql -u root -e "CREATE DATABASE ragnarok;" || aborterror "Unable to create database."
         mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
         mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
         mysql -u root ragnarok < sql-files/custom.sql || aborterror "Unable to import logs database."
+    - uses: actions/checkout@v2
+    - name: Configure Files
+      run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
+    - name: Compile Server
+      run: make server
     - name: Run Login
       run: ./login-server --run-once
