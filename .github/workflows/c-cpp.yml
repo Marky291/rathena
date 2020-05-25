@@ -23,10 +23,8 @@ jobs:
         mysql password: ragnarok
     - name: Create Database
       run: |
-        mysql -uroot -ppassword -e "SHOW DATABASES"
-        
         sudo systemctl start mysql
-        mysql -u root -e "CREATE DATABASE ragnarok;" || aborterror "Unable to create database."
+        mysql -u -e "SHOW DATABASES"
         mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
         mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
         mysql -u root ragnarok < sql-files/custom.sql || aborterror "Unable to import logs database."
