@@ -5,25 +5,23 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+        
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+            MYSQL_DATABASE: ragnarok
+        ports:
+            - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        
     steps:
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        # MYSQL_DATABASE - name for the default database that is created
-        mysql database: ragnarok
-        # MYSQL_USER - create the specified user with superuser power for created database
-        mysql user: ragnarok
-        # MYSQL_PASSWORD - specified superuser password which user is power for created database
-        mysql password: ragnarok
     - name: Create Database
       run: |
-        sudo systemctl start mysql
         mysql -uroot -e "SHOW DATABASES"
         mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
         mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
