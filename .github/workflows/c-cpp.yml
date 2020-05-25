@@ -18,7 +18,6 @@ jobs:
         mysql -u root -proot -e "CREATE DATABASE ragnarok;"
         mysql -u root -proot ragnarok < sql-files/main.sql
         mysql -u root -proot ragnarok < sql-files/logs.sql
-        mysql -u root -proot ragnarok < sql-files/custom.sql
     - name: Configure Files
       run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
     - name: Compile Server
