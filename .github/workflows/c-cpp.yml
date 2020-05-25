@@ -8,25 +8,14 @@ on:
         
 jobs:
   build:
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-            MYSQL_ALLOW_EMPTY_PASSWORD: yes
-            MYSQL_DATABASE: ragnarok
-        ports:
-            - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-        
+    runs-on: ubuntu-18.04
     steps:
-    - name: Create Database
-      run: |
-        sudo /etc/init.d/mysql start
-        mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
-        mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
-        mysql -u root ragnarok < sql-files/custom.sql || aborterror "Unable to import logs database."
     - uses: actions/checkout@v2
+    - name: Setup MySQL
+      run: |
+        sudo systemctl enable mysql.service
+        sudo systemctl start mysql.service
+        mysql -u root -proot < sql-files/main.sql
     - name: Configure Files
       run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
     - name: Compile Server
