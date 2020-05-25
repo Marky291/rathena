@@ -26,5 +26,11 @@ jobs:
       run: ./configure --enable-prere=no --enable-vip=yes --enable-buildbot=yes
     - name: Compile Server
       run: make server
+    - name: Database Creation
+      run: |
+        mysql -u root -e "CREATE DATABASE ragnarok;" || aborterror "Unable to create database."
+        mysql -u root ragnarok < sql-files/main.sql || aborterror "Unable to import main database."
+        mysql -u root ragnarok < sql-files/logs.sql || aborterror "Unable to import logs database."
+        mysql -u root ragnarok < sql-files/custom.sql || aborterror "Unable to import logs database."
     - name: Run Login
       run: ./login-server --run-once
